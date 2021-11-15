@@ -59,8 +59,6 @@ def get_koef_sh(speed_pesh, speed_shof):
 def move_pesh(x1, y1, x2, y2):
     # пешеход проходит 1 ед пути вне зависимости от условий
     # есть движение по углу, осталось найти этот самый угол
-    x3=x1
-    y3=y2
     ac=math.sqrt((x2-x1)**2+(y2-y1)**2)
     ab=math.sqrt((y2-y1)**2)
     bc=math.sqrt((x2-x1)**2)
@@ -68,18 +66,16 @@ def move_pesh(x1, y1, x2, y2):
         (bc**2+ac**2-ab**2)/(2*bc*ac)
     ))
     x21=x2+math.cos(math.radians(90+ugol))
+    # необходимо добавить еще некоторые значения для верного подсчета
     if x21<=0:
         x21+=0.1
     else:
         x21+=0.2
     y21=y2+math.sin(math.radians(90-ugol))
-    # x21=x21*2
-    # y21=y21*2
     return(x21, y21)
 
 def move_shof(x1, y1, x2, y2):
     d=get_koef_sh(sp_p, sp_sh)
-    # d=get_koef_sh(sp_p, sp_sh)*2
     ax=x1
     ay=y1
     bx=x2
@@ -95,25 +91,28 @@ try:
     ySh=[y_sh]
     xP=[x_p]
     yP=[y_p]
-    i=0
+    i=0 # счетчик
     while win_check(xSh[-1], ySh[-1], xP[-1], yP[-1])==0:
+        # берем последнее значение и проводим манипуляции в отдельно вынесенной функции для шофера
         toMoveShof=move_shof(xSh[-1], ySh[-1], xP[-1], yP[-1])
         xSh.append(toMoveShof[0])
         ySh.append(toMoveShof[1])
+        # аналогично для пешехода
         toMovePesh=move_pesh(xSh[-1], ySh[-1], xP[-1], yP[-1])
         xP.append(toMovePesh[0])
         yP.append(toMovePesh[1])
-        i+=1
+        i+=1 # увеличиваем счетчик
     print(i) # количество точек
-    winId=win_check(xSh[-1], ySh[-1], xP[-1], yP[-1])
+    winId=win_check(xSh[-1], ySh[-1], xP[-1], yP[-1]) # проверка на "выигрыш"
     if winId==2:
         pmsg.alert(text='Победил пешеход - выход за пределы игрового поля', title='Итоги игры')
     if winId==1:
-        vmeste='( '+str(round(xP[-1], 1))+' ; '+str(round(yP[-1], 1))+' ) - точка встречи'
-        pmsg.alert(text='Победил водитель - догнал пешехода'+'\n'+vmeste, title='Итоги игры')
+        vmeste='( '+str(round(xP[-1], 1))+' ; '+str(round(yP[-1], 1))+' ) - точка встречи' # выводим положение точки встречи
+        pmsg.alert(text='Победил водитель - догнал пешехода'+'\n'+vmeste, title='Итоги игры') # всплывающее окно с информацией
 except MemoryError:
-    exit('Not enough memory. Try other input data')
-    # если ОЗУ будет переполнена от перебора решений - программа будет завершена
+    exit('Not enough memory. Try other input data.')
+    # если ОЗУ будет переполнена от перебора решений - программа будет завершена. 
+    # Во время пробных решений использование ОЗУ доходило до 1 Гб с 3 млн. значений в каждом из 4 списках
     
 # координатная ось
 tr.delay(1)
@@ -125,6 +124,8 @@ tr.left(90)
 tr.forward(400)
 tr.backward(800)
 tr.up()
+txt='Если покажется, что прямые слишком ровные - обратите внимание,\nчто масштаб на рисунке 1 к 20. От этого не видно прямых углов.'
+pmsg.alert(text=txt, title='Предупреждение')
 # построение движения пешехода
 tr.delay(2)
 tr.pencolor('blue')
@@ -133,6 +134,8 @@ tr.down()
 for i in range(len(xP)):
     tr.goto(xP[i], yP[i])
 tr.up()
+
+# построение движения шофера
 tr.goto(xSh[0], ySh[0])
 tr.down()
 tr.pencolor('red')
