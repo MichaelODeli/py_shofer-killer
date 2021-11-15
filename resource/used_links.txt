@@ -1,0 +1,4 @@
+https://pythonworld.ru/moduli/modul-math.html
+https://gvard.github.io/py/turtle/
+https://docs.python.org/3/library/turtle.html
+formula http://mathhelpplanet.com/viewtopic.php?f=28&t=35308
