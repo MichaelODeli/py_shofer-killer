@@ -42,7 +42,8 @@ def central(x1, y1, x2, y2):
 
 def win_check(x1, y1, x2, y2):
     # if round(x1, 3)==round(x2, 3) and round(y1, 3)==round(y2, 3):
-    if round(x1, 1)==round(x2, 1) and round(y1, 1)==round(y2, 1):
+    # if round(x1, 1)==round(x2, 1) and round(y1, 1)==round(y2, 1):
+    if round(x1)==round(x2) and round(y1)==round(y2):
         # условие, когда их координаты совпали - победил шофер
         return 1
     elif x2>=math.fabs(400) or y2>=math.fabs(400):
@@ -124,8 +125,9 @@ tr.left(90)
 tr.forward(400)
 tr.backward(800)
 tr.up()
+
 txt='Если покажется, что прямые слишком ровные - обратите внимание,\nчто масштаб на рисунке 1 к 20. От этого не видно прямых углов.'
-pmsg.alert(text=txt, title='Предупреждение')
+# pmsg.alert(text=txt, title='Предупреждение')
 # построение движения пешехода
 tr.delay(2)
 tr.pencolor('blue')
