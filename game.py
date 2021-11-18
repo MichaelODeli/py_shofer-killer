@@ -46,7 +46,7 @@ def win_check(x1, y1, x2, y2):
     if round(x1)==round(x2) and round(y1)==round(y2):
         # условие, когда их координаты совпали - победил шофер
         return 1
-    elif x2>=math.fabs(400) or y2>=math.fabs(400):
+    elif math.fabs(x2)>=400 or math.fabs(y2)>=400:
         # выход за пределы игрового поля - победил пешеход (именно его координаты проверям)
         return 2
     else:
@@ -87,7 +87,7 @@ def move_shof(x1, y1, x2, y2):
     return(cx, cy)
 
 try:
-    # задаем начальные позиции
+    # задаем начальные позиции в виде списка
     xSh=[x_sh]
     ySh=[y_sh]
     xP=[x_p]
@@ -103,7 +103,7 @@ try:
         xP.append(toMovePesh[0])
         yP.append(toMovePesh[1])
         i+=1 # увеличиваем счетчик
-    print(i) # количество точек
+    print(i) # количество точек, которые прошли игроки
     winId=win_check(xSh[-1], ySh[-1], xP[-1], yP[-1]) # проверка на "выигрыш"
     if winId==2:
         pmsg.alert(text='Победил пешеход - выход за пределы игрового поля', title='Итоги игры')
