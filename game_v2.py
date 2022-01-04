@@ -76,10 +76,10 @@ def move_pesh(x1, y1, x2, y2):
     ))
     x21=x2+math.cos(math.radians(90+ugol))
     # необходимо добавить еще некоторые значения для верного подсчета
-    # if x21<=0: # v1
-    #     x21+=0.1
-    # else:
-    #     x21+=0.2
+    if x21<=0:
+        x21+=0.1
+    else:
+        x21+=0.2
     y21=y2+math.sin(math.radians(90-ugol))
     return(x21, y21)
 
@@ -92,6 +92,7 @@ def move_shof(x1, y1, x2, y2):
     # используя формулу, находим следующую точку по прямой
     cx=ax+((d*(bx-ax))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
     cy=ay+((d*(by-ay))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
+    # инерциальность еще в работе, возникли ошибки
     return(cx, cy)
 
 try:
