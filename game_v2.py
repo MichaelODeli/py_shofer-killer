@@ -1,7 +1,11 @@
 import turtle as tr
 import pymsgbox as pmsg
 import math
-import numpy as np
+
+# задаем дополнительные условия, если False - встреча произойдет точно в точке, True - в заданном радиусе
+dop_uslovia = True
+# заданный радиус
+radius = 5
 
 # проводим проверку вводимых данных пользователем
 try:
@@ -41,15 +45,19 @@ def central(x1, y1, x2, y2):
     return(x, y)
 
 def win_check(x1, y1, x2, y2):
-    # if round(x1, 3)==round(x2, 3) and round(y1, 3)==round(y2, 3):
-    # if round(x1, 1)==round(x2, 1) and round(y1, 1)==round(y2, 1):
-    if round(x1)==round(x2) and round(y1)==round(y2):
+    if dop_uslovia==False and round(x1)==round(x2) and round(y1)==round(y2): # v1
+        # условие, когда их координаты совпали - победил шофер
+        return 1
+    # check with https://profmeter.com.ua/communication/learning/course/course7/chapter0552/
+    check = round((x2-x1)**2+(y2-y1)**2)
+    if dop_uslovia==True and check<=radius**2: # v2
         # условие, когда их координаты совпали - победил шофер
         return 1
     elif math.fabs(x2)>=400 or math.fabs(y2)>=400:
         # выход за пределы игрового поля - победил пешеход (именно его координаты проверям)
         return 2
     else:
+        # print(check) # debug
         return 0
 
 def get_koef_sh(speed_pesh, speed_shof):
@@ -68,10 +76,10 @@ def move_pesh(x1, y1, x2, y2):
     ))
     x21=x2+math.cos(math.radians(90+ugol))
     # необходимо добавить еще некоторые значения для верного подсчета
-    if x21<=0:
-        x21+=0.1
-    else:
-        x21+=0.2
+    # if x21<=0: # v1
+    #     x21+=0.1
+    # else:
+    #     x21+=0.2
     y21=y2+math.sin(math.radians(90-ugol))
     return(x21, y21)
 
