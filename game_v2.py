@@ -7,8 +7,9 @@ dop_uslovia = True
 # заданный радиус
 radius = 5
 # идеальные условия задают наличие или отсутствие инерциальности водителя
-ideal_uslovia = True
-
+ideal_uslovia = False
+# показатель инерционности. единица - шофер направлен прямо на пешехода. задается от 0.5 до 1.0
+inerzion = 0.6
 
 # проводим проверку вводимых данных пользователем
 try:
@@ -26,7 +27,7 @@ except:
 
 # сначала координаты шофера, потом координаты пешехода
 
-# тестовые данные для отладки
+# # тестовые данные для отладки
 # x_sh=200
 # y_sh=40
 # x_p=-40
@@ -97,18 +98,21 @@ def move_shof(x1, y1, x2, y2):
         cy=ay+((d*(by-ay))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
         return(cx, cy)
     else:
-        exit('Not supported')
-        # cx=ax+((d*(bx-ax))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
-        # cy=ay+((d*(by-ay))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
-        # if y2>cy:
-        #     # пешеход выше шофера
-        #     cy=cy-(y2-cy)/2
-        # elif y2<cy:
-        #     # пешеход ниже шофера
-        #     cy=cy+(cy-y2)/2
-        # else:
-        #     pass
-        return(cx, cy)
+        newShx=ax+((d*(bx-ax))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
+        newShy=ay+((d*(by-ay))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
+        prevShx=x1
+        peshX=x2
+        if peshX>newShx:
+            kf=abs(prevShx-newShx)
+            kf=inerzion*kf
+            newShx=prevShx+kf
+        elif peshX<newShx:
+            kf=abs(prevShx-newShx)
+            kf=inerzion*kf
+            newShx=prevShx-kf
+        else:
+            pass
+        return(newShx, newShy)
 
 
 try:
