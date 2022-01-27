@@ -243,13 +243,13 @@ def move_shof(x1, y1, x2, y2, i):
                 ugol=math.degrees(math.acos(
                     (bc**2+ac**2-ab**2)/(2*bc*ac)
                 ))
-                x11=x1+math.cos(math.radians(90+ugol))
+                x11=x1+math.cos(math.radians(90+ugol))*0.667
                 # необходимо добавить еще некоторые значения для верного подсчета
                 if x11<=0:
                     x11+=0.1
                 else:
                     x11+=0.2
-                y11=y1+math.sin(math.radians(90-ugol))*0.5
+                y11=y1+math.sin(math.radians(90-ugol))*0.667
                 return(x11, y11)
             else:
                 newShx=ax+((d*(bx-ax))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
