@@ -188,7 +188,7 @@ def move_pesh(x1, y1, x2, y2, til):
                     x21+=0.2
                 y21=y2+math.sin(math.radians(90-ugol))
                 return(x21, y21)
-def move_shof(x1, y1, x2, y2,):
+def move_shof(x1, y1, x2, y2, i):
     d=get_koef_sh(sp_p, sp_sh)
     ax=x1
     ay=y1
@@ -218,6 +218,8 @@ def move_shof(x1, y1, x2, y2,):
                 pass
             return(newShx, newShy)
         if newStratShof==True: # i dont do it, this is just zatravka
+            tiltt = i%5
+        if tiltt!=0:
             newShx=ax+((d*(bx-ax))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
             newShy=ay+((d*(by-ay))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
             prevShx=x1
@@ -233,7 +235,38 @@ def move_shof(x1, y1, x2, y2,):
             else:
                 pass
             return(newShx, newShy)
-
+        else:
+            if (abs(x1)<=(square/2) and abs(x1)>=((square*0.9)/2)) or (abs(y1)<=(square/2) and abs(y1)>=((square*0.9)/2)):
+                ac=math.sqrt((x1-x2)**2+(y1-y2)**2)
+                ab=math.sqrt((y1-y2)**2)
+                bc=math.sqrt((x1-x2)**2)
+                ugol=math.degrees(math.acos(
+                    (bc**2+ac**2-ab**2)/(2*bc*ac)
+                ))
+                x11=x1+math.cos(math.radians(90+ugol))
+                # необходимо добавить еще некоторые значения для верного подсчета
+                if x11<=0:
+                    x11+=0.1
+                else:
+                    x11+=0.2
+                y11=y1+math.sin(math.radians(90-ugol))*0.5
+                return(x11, y11)
+            else:
+                newShx=ax+((d*(bx-ax))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
+                newShy=ay+((d*(by-ay))/(math.sqrt((bx-ax)**2+(by-ay)**2)))
+                prevShx=x1
+                peshX=x2
+                if peshX>newShx:
+                    kf=abs(prevShx-newShx)
+                    kf=inerzion*kf
+                    newShx=prevShx+kf
+                elif peshX<newShx:
+                    kf=abs(prevShx-newShx)
+                    kf=inerzion*kf
+                    newShx=prevShx-kf
+                else:
+                    pass
+                return(newShx, newShy)
 try:
     # задаем начальные позиции в виде списка
     xSh=[int(x_sh)]
@@ -243,7 +276,7 @@ try:
     i=1 # счетчик
     while win_check(xSh[-1], ySh[-1], xP[-1], yP[-1])==0:
         # берем последнее значение и проводим манипуляции в отдельно вынесенной функции для шофера
-        toMoveShof=move_shof(xSh[-1], ySh[-1], xP[-1], yP[-1])
+        toMoveShof=move_shof(xSh[-1], ySh[-1], xP[-1], yP[-1], i)
         xSh.append(toMoveShof[0])
         ySh.append(toMoveShof[1])
         # аналогично для пешехода
