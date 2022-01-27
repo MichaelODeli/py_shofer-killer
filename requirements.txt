@@ -1,1 +1,2 @@
 PyMsgBox==1.0.9
+PySimpleGUI==4.56.0
